@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapaScreen extends StatefulWidget {
@@ -36,8 +38,37 @@ class _MapaScreenState extends State<MapaScreen> {
   @override
   void initState() {
     super.initState();
-    
+    obtenerCoordenadasActuales();
   }
+
+  void obtenerCoordenadasActuales() async {
+  // Verifica si el permiso de ubicación está habilitado
+  LocationPermission permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      if (kDebugMode) {
+        print('Permiso de ubicación denegado');
+      }
+      return;
+    }
+  }
+
+  // Obtiene la posición actual
+  Position position = await Geolocator.getCurrentPosition(
+    desiredAccuracy: LocationAccuracy.high,
+  );
+
+  _moveToLocation(position.latitude,position.longitude);
+  _addMarker(position.latitude,position.longitude);
+  // Imprime las coordenadas
+  if (kDebugMode) {
+    print('Latitud: ${position.latitude}');
+  }
+  if (kDebugMode) {
+    print('Longitud: ${position.longitude}');
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -127,8 +158,7 @@ class _MapaScreenState extends State<MapaScreen> {
             Navigator.pop(context);
           },
           style: TextButton.styleFrom(
-            primary: Colors.white,
-            backgroundColor: Colors.blue,
+            foregroundColor: Colors.white, backgroundColor: Colors.blue,
           ),
           child: const Padding(
             padding: EdgeInsets.all(8.0),
