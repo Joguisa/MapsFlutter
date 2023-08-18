@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+// import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapaScreen extends StatefulWidget {
@@ -127,6 +127,7 @@ class _MapaScreenState extends State<MapaScreen> {
     );
   }
 
+  // ignore: unused_element
   void _buscarUbicacion() {
     final lat = double.tryParse(_latController.text) ?? 0.0;
     final lng = double.tryParse(_lngController.text) ?? 0.0;
